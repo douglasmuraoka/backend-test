@@ -1,7 +1,7 @@
 import { Arg, Mutation, Query, Resolver, Subscription, Root } from "type-graphql"
 
 import { AddTicketInput, ListTicketsInput, TicketInput } from "./types/Ticket.input"
-import AsyncIterableObserver from "./ObservableAsyncIterable"
+import AsyncIterableObserver from "./AsyncIterableObserver"
 import TicketModel, { Ticket } from "../entities/Ticket"
 import TicketService from "../services/Ticket.service"
 import TicketSubscription from "./types/TicketSubscription.output"
