@@ -6,7 +6,7 @@ We've prepared a basic skeleton of a project to help you work a little bit faste
 
 ## Requirements
 
-- [ ] Provide a GraphQL endpoint to initiate cleaning and storing of ticket data into MonogDB from the provided external API
+- [x] Provide a GraphQL endpoint to initiate cleaning and storing of ticket data into MongoDB from the provided external API
   - API: `https://us-central1-bonsai-interview-endpoints.cloudfunctions.net/movieTickets?skip=0&limit=10`
   - The `skip` and `limit` parameters are the only ones that exist.
   - There are only `1000` movie tickets in this test feed but you should be able to consume more than that
