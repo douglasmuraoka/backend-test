@@ -115,7 +115,7 @@ describe("BonsaiData.service", () => {
           genre: ["Drama", "War"],
           price: 28.704,
           inventory: 4,
-          imageUrl: null,
+          imageUrl: "N/A",
           date: "2017-09-27T05:06:56Z",
         },
         {
