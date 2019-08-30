@@ -1,8 +1,10 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql"
-
-import TicketModel, { Ticket } from "../entities/ticket"
+import { Arg, Mutation, Query, Resolver, Subscription, Root } from "type-graphql"
 
 import { AddTicketInput, ListTicketsInput, TicketInput } from "./types/Ticket.input"
+import AsyncIterableObserver from "./ObservableAsyncIterable"
+import TicketModel, { Ticket } from "../entities/Ticket"
+import TicketService from "../services/Ticket.service"
+import TicketSubscription from "./types/TicketSubscription.output"
 
 @Resolver(() => Ticket)
 export class TicketResolver {
@@ -29,5 +31,26 @@ export class TicketResolver {
   public async addTicket(@Arg("input") ticketInput: AddTicketInput): Promise<Ticket> {
     const ticket = new TicketModel(ticketInput)
     return ticket.saveFields()
+  }
+
+  @Subscription({
+    subscribe: (): AsyncIterable<Ticket[]> => {
+      // Returns an async iterable that will resolve data whenever a Ticket batch
+      // was fetched from external sources and persisted into the database.
+      const ticketDataAsyncIterable = new AsyncIterableObserver(
+        TicketService.getTicketsInitObservable(),
+      )
+      // Cleans Ticket collection and then starts subscription, which will begin
+      // providing values to async iterator
+      TicketModel.deleteMany({}).then(() => {
+        ticketDataAsyncIterable.subscribe()
+      })
+      return ticketDataAsyncIterable
+    },
+  })
+  public initializeTickets(@Root() tickets: Ticket[]): TicketSubscription {
+    return {
+      tickets,
+    }
   }
 }
