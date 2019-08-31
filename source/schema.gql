@@ -63,7 +63,7 @@ type Query {
 
 type Rating {
   source: String!
-  value: Float!
+  value: String!
 }
 
 type Subscription {
