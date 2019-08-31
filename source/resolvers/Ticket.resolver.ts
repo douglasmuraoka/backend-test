@@ -2,6 +2,8 @@ import { Arg, Mutation, Query, Resolver, Subscription, Root } from "type-graphql
 
 import { AddTicketInput, ListTicketsInput, TicketInput } from "./types/Ticket.input"
 import AsyncIterableObserver from "./AsyncIterableObserver"
+import MovieModel from "../entities/Movie"
+import OMDbService from "../services/OMDb.service"
 import TicketModel, { Ticket } from "../entities/Ticket"
 import TicketService from "../services/Ticket.service"
 import TicketSubscription from "./types/TicketSubscription.output"
@@ -40,10 +42,13 @@ export class TicketResolver {
       const ticketDataAsyncIterable = new AsyncIterableObserver(
         TicketService.getTicketsInitObservable(),
       )
-      // Cleans Ticket collection and then starts subscription, which will begin
+
+      // Cleans Ticket and Movie collection and then starts subscription, which will begin
       // providing values to async iterator
-      TicketModel.deleteMany({}).then(() => {
-        ticketDataAsyncIterable.subscribe()
+      Promise.all([TicketModel.deleteMany({}), MovieModel.deleteMany({})]).then(() => {
+        // Subscribe to Ticket initialization, so that, once completed, starts
+        // the Movie initialization
+        ticketDataAsyncIterable.subscribe(OMDbService.initializeOMDbData)
       })
       return ticketDataAsyncIterable
     },

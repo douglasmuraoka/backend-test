@@ -19,7 +19,7 @@ class AsyncIterableObserver<T> implements AsyncIterable<T> {
     this.observable = observable
   }
 
-  public subscribe(): void {
+  public subscribe(onDone: Function): void {
     this.observable.subscribe(
       next => {
         const pendingResolve = this.pendingResolves.shift()
@@ -39,6 +39,7 @@ class AsyncIterableObserver<T> implements AsyncIterable<T> {
       },
       () => {
         this.isDone = true
+        onDone()
       },
     )
   }

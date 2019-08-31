@@ -22,6 +22,33 @@ input ListTicketsInput {
   limit: Int!
 }
 
+type Movie {
+  _id: ObjectId!
+  title: String!
+  year: Int!
+  rated: String
+  released: DateTime
+  runtime: Int!
+  genre: [String!]!
+  director: String!
+  writers: [String!]!
+  actors: [String!]!
+  plot: String!
+  language: String!
+  country: String!
+  awards: [String!]
+  posterUrl: String
+  ratings: [Rating!]
+  metascore: Int
+  imdbRating: Float
+  imdbVotes: Int
+  imdbID: String!
+  dvdReleased: DateTime
+  boxOffice: Int
+  production: String
+  website: String
+}
+
 type Mutation {
   addTicket(input: AddTicketInput!): Ticket!
 }
@@ -32,6 +59,11 @@ scalar ObjectId
 type Query {
   ticket(input: TicketInput!): Ticket
   listTickets(input: ListTicketsInput!): [Ticket!]!
+}
+
+type Rating {
+  source: String!
+  value: String!
 }
 
 type Subscription {
