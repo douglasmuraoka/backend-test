@@ -44,6 +44,9 @@ export class Ticket extends Typegoose {
   @Property({ required: true })
   public date: Date
 
+  @Property()
+  public movieId: string
+
   @InstanceMethod
   public saveFields(this: InstanceType<Ticket>) {
     // Inventory should always be at least 0

@@ -29,5 +29,8 @@ describe("transformGenres()", () => {
     test("custom delimiter", () => {
       expect(transformGenres("one,two,three", ",")).toEqual(["one", "two", "three"])
     })
+    test("delimiter with space", () => {
+      expect(transformGenres("one, two, three", ",")).toEqual(["one", "two", "three"])
+    })
   })
 })
