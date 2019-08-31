@@ -78,7 +78,7 @@ describe("transformOmdbDataToMovie()", () => {
         plot: "The Guardians struggle...",
         language: "English",
         country: "USA",
-        awards: ["Nominated for 1 Oscar", "Another 12 wins & 42 nominations."],
+        awards: ["Nominated for 1 Oscar", "Another 12 wins & 42 nominations"],
         posterUrl: "https://poster.jpg",
         ratings: [
           {

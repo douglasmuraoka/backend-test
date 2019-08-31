@@ -25,7 +25,12 @@ const transformOmdbDataToMovie = (data: OMDbData): Movie => {
   movie.plot = data.Plot
   movie.language = data.Language
   movie.country = data.Country
-  movie.awards = data.Awards === "N/A" ? null : data.Awards.split(". ").map(str => str.trim())
+  movie.awards =
+    data.Awards === "N/A"
+      ? null
+      : data.Awards.split(".")
+          .map(award => award.trim())
+          .filter(award => award)
   movie.posterUrl = checkNA(data.Poster)
   movie.ratings =
     data.Ratings.length === 0
