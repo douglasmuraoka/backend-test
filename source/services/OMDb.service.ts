@@ -19,13 +19,13 @@ class OMDbService {
    * Fetches, parses and persists Movie data from OMDb.
    * It also updates Ticket with the Movie ID they are related to.
    */
-  public async initializeOMDbData() {
+  initializeOMDbData = async () => {
     // Using projection since we just need the title...
     const tickets = await TicketModel.find({}, { title: 1 })
 
     // For each term, fetches a movie by its title
     const termList: string[] = tickets.map(ticket => stripSecondaryTitleNames(ticket.title))
-    const omdbData: OMDbResponse[] = await bluebird.map(termList, term => this.fetchByTitle(term), {
+    const omdbData: OMDbResponse[] = await bluebird.map(termList, this.fetchByTitle, {
       concurrency: 10,
     })
 

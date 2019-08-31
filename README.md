@@ -10,7 +10,7 @@ We've prepared a basic skeleton of a project to help you work a little bit faste
   - API: `https://us-central1-bonsai-interview-endpoints.cloudfunctions.net/movieTickets?skip=0&limit=10`
   - The `skip` and `limit` parameters are the only ones that exist.
   - There are only `1000` movie tickets in this test feed but you should be able to consume more than that
-- [ ] Clean and store additional data about the imported movie tickets from this API: http://www.omdbapi.com/
+- [x] Clean and store additional data about the imported movie tickets from this API: http://www.omdbapi.com/
 - [ ] Create a GraphQL endpoint that can deliver data from both data sources
   - Support pagination
 - [ ] Sufficiently and effectively unit test functions as you see fit
