@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "pretest": "MONGODB_VERSION=4.x MONGODB_PORT=27019 MONGODB_TOPOLOGY=standalone mongodb-runner start",
+    "pretest": "npm run posttest && MONGODB_VERSION=4.x MONGODB_PORT=27019 MONGODB_TOPOLOGY=standalone mongodb-runner start",
     "test": "jest .",
     "posttest": "MONGODB_VERSION=4.x MONGODB_PORT=27019 MONGODB_TOPOLOGY=standalone mongodb-runner stop",
     "lint": "tslint --project '.'",
