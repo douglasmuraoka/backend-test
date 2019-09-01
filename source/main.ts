@@ -8,9 +8,9 @@ import { buildSchema } from "type-graphql"
 import { ObjectIdScalar } from "./objectId.scalar"
 import resolvers from "./resolvers"
 import typegooseMiddleware from "./typegooseMiddleware"
+import { MONGO_HOST, MONGO_PORT, MONGO_DB, PORT } from "./settings"
 
-export const MONGODB_URI = "mongodb://localhost:27017/bonsai-backend-test"
-export const PORT = 4000
+export const MONGODB_URI = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
 
 const main = async () => {
   try {

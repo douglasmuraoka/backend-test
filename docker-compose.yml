@@ -1,0 +1,28 @@
+version: "3"
+services:
+  mongo:
+    image: mongo:4-bionic
+    restart: always
+    volumes:
+      - "./mongo:/data/db" # Needed to make Mongo data persistent
+    environment:
+      - MONGO_INITDB_DATABASE=bonsai-backend-test
+    ports:
+      - 27020:27017 # We can connect to MongoDB using port 27020 :)
+  server:
+    build:
+      context: ./
+    restart: always
+    volumes:
+      - ./node_modules:/server/node_modules
+      - ./:/server
+    environment:
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_DB=bonsai-backend-test
+      - PORT=4000
+      - OMDB_API_KEY=Dont_forget_to_update_me # Put your OMDb API key here! To get a new key: http://www.omdbapi.com/apikey.aspx
+    ports:
+      - 4000:4000
+    depends_on:
+      - mongo
