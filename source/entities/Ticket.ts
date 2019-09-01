@@ -45,7 +45,7 @@ export class Ticket extends Typegoose {
   public date: Date
 
   @Property()
-  public movieId: string
+  public movieId?: string
 
   @InstanceMethod
   public saveFields(this: InstanceType<Ticket>) {
