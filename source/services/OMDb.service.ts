@@ -49,12 +49,16 @@ class OMDbService {
       const response = omdbData[idx]
       if (response.Response === "True") {
         const data: OMDbData = response as OMDbData
-        const movie: Movie = transformOmdbDataToMovie(data)
-        moviesToPersist.push(movie)
+        try {
+          const movie: Movie = transformOmdbDataToMovie(data)
+          moviesToPersist.push(movie)
 
-        // Sets the movieId on Ticket
-        ticket.movieId = movie.imdbID
-        ticket.save() // No reason to be sync here
+          // Sets the movieId on Ticket
+          ticket.movieId = movie.imdbID
+          ticket.save() // No reason to be sync here
+        } catch (err) {
+          console.error("Error while transforming OMDb data:", err)
+        }
       } else {
         moviesNotFound.push(ticket)
       }

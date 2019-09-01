@@ -20,9 +20,9 @@ export class Movie extends Typegoose {
   @Property({ required: true })
   public title: string
 
-  @Field(() => Int)
-  @Property({ required: true })
-  public year: number
+  @Field(() => Int, { nullable: true })
+  @Property()
+  public year: number | null
 
   @Field(() => String, { nullable: true })
   @Property()

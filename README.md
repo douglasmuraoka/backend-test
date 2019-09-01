@@ -28,7 +28,7 @@ PORT=4000 # Application port
 ```
 
 ## Data initialization
-To initialize `Ticket` and `Movie` data, it is needed to subscribe to `initializeTickets`. It will fetch Tickets from the Bonsai API and persist it in batches. As soon as it is persisted, the data will be published to GraphQL, and you will received it from the subscription. After the Ticket initialization is done, the application will automatically start fetching data from the OMDb API to populate the `Movie` data. `Movie` content can be accessed from a `Ticket`.
+To initialize `Ticket` and `Movie` data, it is needed to subscribe to `initializeTickets`. It will fetch Tickets from the Bonsai API and persist it in batches. As soon as it is persisted, the data will be published to GraphQL, and you will receive it from the subscription. After the Ticket initialization is done, the application will automatically start fetching data from the OMDb API to populate the `Movie` data. `Movie` content can be accessed from a `Ticket`.
 
 ## GraphQL operations
 

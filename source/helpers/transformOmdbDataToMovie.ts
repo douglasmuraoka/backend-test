@@ -14,7 +14,7 @@ export const checkNA = (str: string, transform?: Function) =>
 const transformOmdbDataToMovie = (data: OMDbData): Movie => {
   const movie = new Movie()
   movie.title = data.Title
-  movie.year = toInt(data.Year)
+  movie.year = data.Year ? toInt(data.Year) : null
   movie.rated = checkNA(data.Rated)
   movie.released = checkNA(data.Released, toDate)
   movie.runtime = data.Runtime === "N/A" ? null : toInt(data.Runtime.split(" ")[0])
