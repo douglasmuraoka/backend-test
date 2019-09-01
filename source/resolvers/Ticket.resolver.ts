@@ -1,9 +1,12 @@
-import { Arg, Mutation, Query, Resolver, Subscription, Root } from "type-graphql"
+import { Arg, Args, Mutation, Query, Resolver, Subscription, Root } from "type-graphql"
 
-import { AddTicketInput, ListTicketsInput, TicketInput } from "./types/Ticket.input"
+import { AddTicketInput, TicketInput, ListTicketsInput } from "./types/Ticket.input"
 import AsyncIterableObserver from "./AsyncIterableObserver"
+import PagedResultFields from "./decorators/Fields"
+import PaginationService from "../services/Pagination.service"
 import MovieModel from "../entities/Movie"
 import OMDbService from "../services/OMDb.service"
+import PaginatedResults from "./types/PaginatedResults.output"
 import TicketModel, { Ticket } from "../entities/Ticket"
 import TicketService from "../services/Ticket.service"
 import TicketSubscription from "./types/TicketSubscription.output"
@@ -19,14 +22,27 @@ export class TicketResolver {
     return ticket
   }
 
-  @Query(() => [Ticket])
-  public async listTickets(@Arg("input") input: ListTicketsInput): Promise<Ticket[]> {
-    const tickets = await TicketModel.find({})
-    const result = tickets
-      .filter(ticket => ticket.date.getTime() < input.cursor.getTime())
-      .sort((a, b) => b.date.getTime() - a.date.getTime())
-      .slice(0, input.limit)
-    return result
+  @Query(() => PaginatedResults)
+  public async listTickets(
+    @Args() { after, first, hasMovieData }: ListTicketsInput,
+    @PagedResultFields() fields: string[],
+  ): Promise<PaginatedResults> {
+    let criteria
+    if (hasMovieData !== undefined) {
+      criteria = {
+        movieId: hasMovieData
+          ? {
+              $gt: "", // Avoid using $exists since it costs way more
+            }
+          : { $eq: null },
+      }
+    } else {
+      criteria = {}
+    }
+    return await PaginationService.getPaginatedResults(criteria, fields, {
+      after,
+      first,
+    })
   }
 
   @Mutation(() => Ticket)

@@ -17,9 +17,9 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
-input ListTicketsInput {
-  cursor: DateTime!
-  limit: Int!
+type Edge {
+  cursor: String!
+  node: Ticket!
 }
 
 type Movie {
@@ -56,9 +56,18 @@ type Mutation {
 """Mongo object id scalar type"""
 scalar ObjectId
 
+type PageInfo {
+  hasNextPage: Boolean!
+}
+
+type PaginatedResults {
+  pageInfo: PageInfo!
+  edges: [Edge!]!
+}
+
 type Query {
   ticket(input: TicketInput!): Ticket
-  listTickets(input: ListTicketsInput!): [Ticket!]!
+  listTickets(first: Int, hasMovieData: Boolean, after: String): PaginatedResults!
 }
 
 type Rating {
