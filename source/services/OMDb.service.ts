@@ -25,9 +25,22 @@ class OMDbService {
 
     // For each term, fetches a movie by its title
     const termList: string[] = tickets.map(ticket => stripSecondaryTitleNames(ticket.title))
-    const omdbData: OMDbResponse[] = await bluebird.map(termList, this.fetchByTitle, {
-      concurrency: 10,
-    })
+    const omdbData: OMDbResponse[] = await bluebird.map(
+      termList,
+      term =>
+        // Promise wrapper to avoid breaking the entire iteration
+        // when some request fails.
+        new Promise(resolve => {
+          this.fetchByTitle(term)
+            .then(resolve)
+            .catch(err => {
+              resolve({ Response: "False", Error: err } as OMDbResponse)
+            })
+        }),
+      {
+        concurrency: 10,
+      },
+    )
 
     const moviesNotFound: Ticket[] = []
     const moviesToPersist: Movie[] = []

@@ -96,4 +96,46 @@ describe("OMDb.service", () => {
     expect(ticketSaveMock).toHaveBeenCalledTimes(1)
     expect(movieInsertManyMock).toHaveBeenCalledTimes(1)
   })
+
+  it("should handle Movie data request error gracefully", async () => {
+    const ticket1 = new Ticket()
+    ticket1.title = "Guardians of the Galaxy Vol. 2"
+
+    const ticket2 = new Ticket()
+    ticket2.title = "Star Wars - The Rise of Skywalker"
+
+    const fakeTicketsData = [ticket1, ticket2]
+    const ticketFindMock = jest.spyOn(TicketModel, "find").mockImplementation(
+      (conditions, projection): any => {
+        expect(conditions).toEqual({})
+        expect(projection).toEqual({ title: 1 })
+        return fakeTicketsData
+      },
+    )
+
+    const fetchByTitleMock = jest.spyOn(OMDbService, "fetchByTitle").mockImplementation(title => {
+      if (title === ticket1.title) {
+        return Promise.reject("something went wrong")
+      } else {
+        return Promise.reject("omg not again")
+      }
+    })
+
+    const movieInsertManyMock = jest.spyOn(MovieModel, "insertMany").mockImplementation(
+      (movies: Movie[]): any => {
+        // We don't need to check all transformation, since
+        // it was already covered by other tests
+        expect(movies).toHaveLength(0)
+      },
+    )
+
+    await OMDbService.initializeOMDbData()
+
+    expect(ticketFindMock).toHaveBeenCalledTimes(1)
+    expect(fetchByTitleMock).toHaveBeenCalledTimes(2)
+    expect(fetchByTitleMock.mock.calls[0][0]).toBe(ticket1.title)
+    expect(fetchByTitleMock.mock.calls[1][0]).toBe(ticket2.title)
+    expect(movieInsertManyMock).toHaveBeenCalledTimes(1)
+    expect(movieInsertManyMock).toHaveBeenCalledWith([])
+  })
 })
