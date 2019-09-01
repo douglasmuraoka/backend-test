@@ -1,4 +1,4 @@
-import OMDbService from "../OMDb.service"
+import OMDbService from "../../services/OMDb.service"
 import TicketModel, { Ticket } from "../../entities/Ticket"
 import MovieModel, { Movie } from "../../entities/Movie"
 

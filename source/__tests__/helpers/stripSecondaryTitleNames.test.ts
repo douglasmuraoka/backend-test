@@ -1,4 +1,4 @@
-import stripSecondaryTitleNames from "../stripSecondaryTitleNames"
+import stripSecondaryTitleNames from "../../helpers/stripSecondaryTitleNames"
 
 describe("stripSecondaryTitleNames()", () => {
   it("should strip secondary titles", () => {

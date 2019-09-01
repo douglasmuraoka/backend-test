@@ -1,8 +1,8 @@
 import { Observable } from "rxjs"
 
-import BonsaiDataService from "../BonsaiData.service"
-import RawTicket from "../model/RawTicket"
-import TicketService from "../Ticket.service"
+import BonsaiDataService from "../../services/BonsaiData.service"
+import RawTicket from "../../services/model/RawTicket"
+import TicketService from "../../services/Ticket.service"
 
 describe("Ticket.service", () => {
   afterEach(() => {

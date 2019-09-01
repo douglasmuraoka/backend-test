@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 import TicketModel, { Ticket } from "../../entities/Ticket"
-import PaginationService from "../Pagination.service"
+import PaginationService from "../../services/Pagination.service"
 
 describe("Pagination.service", () => {
   let t1: Ticket

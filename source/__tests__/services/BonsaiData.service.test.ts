@@ -1,5 +1,5 @@
 import axios from "axios"
-import BonsaiDataService from "../BonsaiData.service"
+import BonsaiDataService from "../../services/BonsaiData.service"
 import TicketModel from "../../entities/Ticket"
 
 const MOVIE_TICKETS_API_URL =

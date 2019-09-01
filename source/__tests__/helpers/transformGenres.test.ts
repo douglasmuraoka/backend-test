@@ -1,4 +1,4 @@
-import transformGenres, { DEFAULT_GENRE_STRING } from "../transformGenres"
+import transformGenres, { DEFAULT_GENRE_STRING } from "../../helpers/transformGenres"
 
 describe("transformGenres()", () => {
   describe("returns default genres when provided with", () => {

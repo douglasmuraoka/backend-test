@@ -1,4 +1,8 @@
-import transformOmdbDataToMovie, { toDate, toFloat, toInt } from "../transformOmdbDataToMovie"
+import transformOmdbDataToMovie, {
+  toDate,
+  toFloat,
+  toInt,
+} from "../../helpers/transformOmdbDataToMovie"
 import { Rating } from "../../entities/Movie"
 
 describe("transformOmdbDataToMovie()", () => {
