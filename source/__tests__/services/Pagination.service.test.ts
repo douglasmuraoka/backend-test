@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { performance, PerformanceObserver } from "perf_hooks"
 
 import TicketModel, { Ticket } from "../../entities/Ticket"
 import PaginationService from "../../services/Pagination.service"
@@ -89,6 +90,43 @@ describe("Pagination.service", () => {
     expect(pageInfo.hasNextPage).toBeFalsy()
     expect(edges).toHaveLength(1)
     expect(edges[0].node.title).toBe("Terminator")
+  })
+
+  it("should find 10 elements among 2000+ elements", async done => {
+    const performanceObserver = new PerformanceObserver((items, observer) => {
+      const entry = items.getEntriesByName("Fetch time").pop()
+      if (entry) {
+        if (entry.duration < 15) {
+          done()
+        } else {
+          fail(`Duration is greater than 15ms: ${entry.duration}ms`)
+        }
+        done()
+      }
+      observer.disconnect()
+    })
+    performanceObserver.observe({ entryTypes: ["measure"] })
+
+    const ticketList: Ticket[] = []
+    for (let i = 0; i < 2000; i++) {
+      const ticket = createTicket(
+        `Ticket ${i}`,
+        i,
+        i + 1,
+        `image ${i}`,
+        [`genre ${i}`, `genre ${i + 1}`],
+        new Date(),
+        `tt0000${i}`,
+      )
+      ticketList.push(ticket)
+    }
+    await TicketModel.insertMany(ticketList)
+
+    performance.mark("beforeCall")
+    const res = await PaginationService.getPaginatedResults({}, {}, { first: 10 })
+    expect(res.edges).toHaveLength(10)
+    performance.mark("afterCall")
+    performance.measure("Fetch time", "beforeCall", "afterCall")
   })
 })
 

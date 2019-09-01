@@ -15,7 +15,7 @@ We've prepared a basic skeleton of a project to help you work a little bit faste
   - Support pagination
 - [ ] Sufficiently and effectively unit test functions as you see fit
 - [ ] Fix any bugs or bad code you happen to find along the way
-- [ ] Optimize one previously written function (`(method) TicketResolver.listTickets(input: ListTicketsInput): Promise<Ticket[]>` in `source/resolvers/Ticket.resolver.ts`). It should get resolved in under 15ms when fetching for 10 items out of 1000+ documents
+- [x] Optimize one previously written function (`(method) TicketResolver.listTickets(input: ListTicketsInput): Promise<Ticket[]>` in `source/resolvers/Ticket.resolver.ts`). It should get resolved in under 15ms when fetching for 10 items out of 1000+ documents
 
 ## Evaluation
 
