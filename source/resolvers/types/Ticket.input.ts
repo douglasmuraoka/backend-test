@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb"
-import { Field, Float, InputType, Int } from "type-graphql"
+import { ArgsType, Field, Float, InputType, Int } from "type-graphql"
 
 import { Ticket } from "../../entities/Ticket"
 
@@ -9,13 +9,16 @@ export class TicketInput {
   public id: ObjectId
 }
 
-@InputType()
+@ArgsType()
 export class ListTicketsInput {
-  @Field(() => Date)
-  public cursor: Date
+  @Field(() => Int, { nullable: true })
+  public first: number
 
-  @Field(() => Int)
-  public limit: number
+  @Field({ nullable: true })
+  public hasMovieData: boolean
+
+  @Field({ nullable: true })
+  public after: string
 }
 
 @InputType()

@@ -9,6 +9,7 @@ import {
   staticMethod as StaticMethod,
   Typegoose,
 } from "typegoose"
+import MovieModel, { Movie } from "./Movie"
 
 @ObjectType()
 export class Ticket extends Typegoose {
@@ -46,6 +47,11 @@ export class Ticket extends Typegoose {
 
   @Property()
   public movieId?: string
+
+  @Field(() => Movie, { name: "movie", nullable: true })
+  async movie() {
+    return this.movieId ? await MovieModel.findOne({ imdbID: { $eq: this.movieId } }) : null
+  }
 
   @InstanceMethod
   public saveFields(this: InstanceType<Ticket>) {

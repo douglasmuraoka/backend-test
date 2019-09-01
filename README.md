@@ -11,7 +11,7 @@ We've prepared a basic skeleton of a project to help you work a little bit faste
   - The `skip` and `limit` parameters are the only ones that exist.
   - There are only `1000` movie tickets in this test feed but you should be able to consume more than that
 - [x] Clean and store additional data about the imported movie tickets from this API: http://www.omdbapi.com/
-- [ ] Create a GraphQL endpoint that can deliver data from both data sources
+- [x] Create a GraphQL endpoint that can deliver data from both data sources
   - Support pagination
 - [ ] Sufficiently and effectively unit test functions as you see fit
 - [ ] Fix any bugs or bad code you happen to find along the way
