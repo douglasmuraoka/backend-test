@@ -11,13 +11,20 @@ export class TicketInput {
 
 @ArgsType()
 export class ListTicketsInput {
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int, { nullable: true, description: "The amount of Tickets to be fetched" })
   public first: number
 
-  @Field({ nullable: true })
+  @Field({
+    nullable: true,
+    description: "True if you wish to fetch only Tickets with Movie data, false otherwise",
+  })
   public hasMovieData: boolean
 
-  @Field({ nullable: true })
+  @Field({
+    nullable: true,
+    description:
+      "The cursor of the latest Ticket from the previous query. Sets this cursor as the starting point to execute the query.",
+  })
   public after: string
 }
 

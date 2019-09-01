@@ -13,7 +13,7 @@ import TicketSubscription from "./types/TicketSubscription.output"
 
 @Resolver(() => Ticket)
 export class TicketResolver {
-  @Query(() => Ticket, { nullable: true })
+  @Query(() => Ticket, { nullable: true, description: "Fetches a single Ticket by its ID" })
   public async ticket(@Arg("input") ticketInput: TicketInput): Promise<Ticket> {
     const ticket = await TicketModel.findById(ticketInput.id)
     if (!ticket) {
@@ -22,7 +22,11 @@ export class TicketResolver {
     return ticket
   }
 
-  @Query(() => PaginatedResults)
+  @Query(() => PaginatedResults, {
+    description: `Fetches a list of Tickets with pagination.
+Pagination can be controlled by setting the 'after' parameter with the cursor.
+To navigate to the next page, set 'after' with the cursor of the latest node from the current query.`,
+  })
   public async listTickets(
     @Args() { after, first, hasMovieData }: ListTicketsInput,
     @PagedResultFields() fields: string[],
@@ -50,7 +54,7 @@ export class TicketResolver {
     })
   }
 
-  @Mutation(() => Ticket)
+  @Mutation(() => Ticket, { description: "Persists a new single Ticket" })
   public async addTicket(@Arg("input") ticketInput: AddTicketInput): Promise<Ticket> {
     const ticket = new TicketModel(ticketInput)
     return ticket.saveFields()
@@ -73,6 +77,8 @@ export class TicketResolver {
       })
       return ticketDataAsyncIterable
     },
+    description:
+      "Initialize Tickets by fetching data from the Bonsai endpoint, and publishes Tickets batches as soon as they are persisted on the database.",
   })
   public initializeTickets(@Root() tickets: Ticket[]): TicketSubscription {
     return {

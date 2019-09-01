@@ -50,6 +50,7 @@ type Movie {
 }
 
 type Mutation {
+  """Persists a new single Ticket"""
   addTicket(input: AddTicketInput!): Ticket!
 }
 
@@ -66,8 +67,28 @@ type PaginatedResults {
 }
 
 type Query {
+  """Fetches a single Ticket by its ID"""
   ticket(input: TicketInput!): Ticket
-  listTickets(first: Int, hasMovieData: Boolean, after: String): PaginatedResults!
+
+  """
+  Fetches a list of Tickets with pagination.
+  Pagination can be controlled by setting the 'after' parameter with the cursor.
+  To navigate to the next page, set 'after' with the cursor of the latest node from the current query.
+  """
+  listTickets(
+    """The amount of Tickets to be fetched"""
+    first: Int
+
+    """
+    True if you wish to fetch only Tickets with Movie data, false otherwise
+    """
+    hasMovieData: Boolean
+
+    """
+    The cursor of the latest Ticket from the previous query. Sets this cursor as the starting point to execute the query.
+    """
+    after: String
+  ): PaginatedResults!
 }
 
 type Rating {
@@ -76,6 +97,10 @@ type Rating {
 }
 
 type Subscription {
+  """
+  Initialize Tickets by fetching data from the Bonsai endpoint, and publishes
+  Tickets batches as soon as they are persisted on the database.
+  """
   initializeTickets: TicketSubscription!
 }
 
