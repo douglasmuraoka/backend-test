@@ -25,7 +25,7 @@ type Edge {
 type Movie {
   _id: ObjectId!
   title: String!
-  year: Int!
+  year: Int
   rated: String
   released: DateTime
   runtime: Int
