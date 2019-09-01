@@ -17,7 +17,7 @@ const transformOmdbDataToMovie = (data: OMDbData): Movie => {
   movie.year = toInt(data.Year)
   movie.rated = checkNA(data.Rated)
   movie.released = checkNA(data.Released, toDate)
-  movie.runtime = toInt(data.Runtime.split(" ")[0])
+  movie.runtime = data.Runtime === "N/A" ? null : toInt(data.Runtime.split(" ")[0])
   movie.genre = transformGenres(data.Genre, ",")
   movie.director = data.Director
   movie.writers = data.Writer.split(", ")

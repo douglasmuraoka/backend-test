@@ -32,9 +32,9 @@ export class Movie extends Typegoose {
   @Property()
   public released: Date | null
 
-  @Field(() => Int)
-  @Property({ required: true })
-  public runtime: number // in minutes
+  @Field(() => Int, { nullable: true })
+  @Property()
+  public runtime: number | null // in minutes
 
   @Field(() => [String])
   @ArrayProperty({ items: String })

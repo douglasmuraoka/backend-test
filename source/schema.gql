@@ -28,7 +28,7 @@ type Movie {
   year: Int!
   rated: String
   released: DateTime
-  runtime: Int!
+  runtime: Int
   genre: [String!]!
   director: String!
   writers: [String!]!
