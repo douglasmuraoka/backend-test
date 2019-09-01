@@ -39,6 +39,11 @@ export class TicketResolver {
     } else {
       criteria = {}
     }
+    // Since movie is not an attribute (movieId is), we need to transform it
+    if (fields.includes("movie")) {
+      fields.splice(fields.indexOf("movie"), 1)
+      fields.push("movieId")
+    }
     return await PaginationService.getPaginatedResults(criteria, fields, {
       after,
       first,

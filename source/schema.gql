@@ -87,6 +87,7 @@ type Ticket {
   inventory: Int!
   imageUrl: String!
   date: DateTime!
+  movie: Movie
 }
 
 input TicketInput {
