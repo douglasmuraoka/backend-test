@@ -30,12 +30,28 @@ class OMDbService {
       term =>
         // Promise wrapper to avoid breaking the entire iteration
         // when some request fails.
-        new Promise(resolve => {
-          this.fetchByTitle(term)
-            .then(resolve)
-            .catch(err => {
-              resolve({ Response: "False", Error: err } as OMDbResponse)
-            })
+        new Promise(async resolve => {
+          try {
+            const byTitleResult: OMDbResponse = await this.fetchByTitle(term)
+            if (byTitleResult.Response === "True") {
+              resolve(byTitleResult)
+            } else {
+              // If title was not found, tries to find it using the OMDb "search" API
+              const bySearchResult = await this.fetchByTitle(term, false)
+
+              // If movie was found, fetches by ID, because "search" API does not
+              // brings all the data we need!
+              if (bySearchResult.Response === "True") {
+                const byIdResult = await this.fetchByID((bySearchResult as OMDbData).imdbID)
+                resolve(byIdResult)
+              } else {
+                // If not found, there's nothing we can do :(
+                resolve(bySearchResult)
+              }
+            }
+          } catch (err) {
+            resolve({ Response: "False", Error: err } as OMDbResponse)
+          }
         }),
       {
         concurrency: 10,
@@ -74,13 +90,30 @@ class OMDbService {
    *
    * @param title The movie title
    */
-  public fetchByTitle(title: string): Promise<OMDbResponse> {
+  public fetchByTitle(title: string, titleOnly: boolean = true): Promise<OMDbResponse> {
+    const params: any = {
+      apikey: OMDB_API_KEY,
+      type: "movie",
+    }
+    if (titleOnly) {
+      params.t = title
+    } else {
+      params.s = title
+    }
+    return axios.get(OMDB_API_URL, { params }).then(axiosResponseHandler)
+  }
+
+  /**
+   * Fetches OMDb data by the movie ID.
+   *
+   * @param id The movie ID
+   */
+  public fetchByID(id: string): Promise<OMDbResponse> {
     return axios
       .get(OMDB_API_URL, {
         params: {
           apikey: OMDB_API_KEY,
-          t: title,
-          type: "movie",
+          i: id,
         },
       })
       .then(axiosResponseHandler)

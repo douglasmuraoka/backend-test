@@ -90,9 +90,10 @@ describe("OMDb.service", () => {
     await OMDbService.initializeOMDbData()
 
     expect(ticketFindMock).toHaveBeenCalledTimes(1)
-    expect(fetchByTitleMock).toHaveBeenCalledTimes(2)
+    expect(fetchByTitleMock).toHaveBeenCalledTimes(3)
     expect(fetchByTitleMock.mock.calls[0][0]).toBe(ticket1.title)
     expect(fetchByTitleMock.mock.calls[1][0]).toBe(ticket2.title)
+    expect(fetchByTitleMock.mock.calls[2][0]).toBe(ticket2.title)
     expect(ticketSaveMock).toHaveBeenCalledTimes(1)
     expect(movieInsertManyMock).toHaveBeenCalledTimes(1)
   })
